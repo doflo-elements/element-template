@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schemas.doflo.com/doflo/v1.0.0/doflo.json",
+  "version": "v0.1.0",
+  "projectName": "example",
+  "integrationId": "00000000-0000-0000-0000-000000000000",
+  "configuration": {},
+  "env": {
+    "global": {
+      "key": ""
+    },
+    "production": {
+      "key": ""
+    }
+  },
+  "bridgeApps": [
+    {
+      "description": {
+        "name": "connect"
+      },
+      "endpoints": [
+        {
+          "path": "/",
+          "ui": {
+            "useWrapper": true,
+            "component": "connect"
+          }
+        },
+        {
+          "file": "./connect/index"
+        }
+      ]
+    }
+  ],
+  "credentials": [
+    {
+      "description": {
+        "displayName": "Application Credential",
+        "name": "appCredential",
+        "nameMask": "`${this.name} (${this.data.shop})`"
+      },
+      "bridgeApp": "connect",
+      "hidden": true,
+      "properties": [
+        {
+          "name": "authToken",
+          "required": true,
+          "hidden": true,
+          "description": "This is the auth token",
+          "displayName": "Auth Token"
+        },
+        {
+          "name": "scopes",
+          "required": false,
+          "hidden": true,
+          "typeOptions": {
+            "alwaysOpenEditWindow": true
+          },
+          "description": "This is the current list of scope the token is approved for",
+          "displayName": "Scopes"
+        }
+      ]
+    }
+  ],
+  "signals": [ ],
+  "actions": [ ],
+  "integrations": [ ],
+  "contexts": [ ]
+}
