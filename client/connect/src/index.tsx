@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ui, ICredentialCreationResponse } from "@doflo/flow-interfaces";
+import { Alert, AlertTitle } from "@mui/material";
+import { ICredentialCreationResponse, ui } from "@doflo/flow-interfaces";
 
-import { Button, InputAdornment, TextField } from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
-import { PermIdentityOutlined } from "@material-ui/icons";
 
 interface IOAuthData {
   code: string;
@@ -19,6 +17,7 @@ export const credentialHelper = (
     APP_TOKEN: string;
     AUTH_SERVER: string;
     CLIENT_ID: string;
+    NAMESPACE: string;
   }>
 ) => {
   const [storeName, setStoreName] = useState<string>();
@@ -54,7 +53,7 @@ export const credentialHelper = (
         props.api.action
           .execute<ICredentialCreationResponse, IOAuthData>({
             actionName: "createCredential",
-            namespace: "shopify",
+            namespace: props.env.NAMESPACE,
             data: {
               code: code,
               shop: shop,
@@ -77,21 +76,21 @@ export const credentialHelper = (
     }
   }, [code]);
 
-  useEffect(() => {
-    if (storeName.trim().length > 0) {
-      if (storeName.trim().charAt(0) !== "-") {
-        if (storeName.trim().charAt(storeName.trim().length - 1) !== "-") {
-          setOk(true);
-        } else {
-          setOk(false);
-        }
-      } else {
-        setOk(false);
-      }
-    } else {
-      setOk(false);
-    }
-  }, [storeName]);
+  // useEffect(() => {
+  //   if (storeName.trim().length > 0) {
+  //     if (storeName.trim().charAt(0) !== "-") {
+  //       if (storeName.trim().charAt(storeName.trim().length - 1) !== "-") {
+  //         setOk(true);
+  //       } else {
+  //         setOk(false);
+  //       }
+  //     } else {
+  //       setOk(false);
+  //     }
+  //   } else {
+  //     setOk(false);
+  //   }
+  // }, [storeName]);
 
   function sendToServer() {
     var clientId = props.env.APP_TOKEN;
@@ -135,54 +134,7 @@ export const credentialHelper = (
   }
 
   return !good && !creating && !error ? (
-    <>
-      <div className="mb-5">
-        <TextField
-          fullWidth
-          variant="outlined"
-          id="textfield-name"
-          label="Shopify Store Name"
-          value={storeName}
-          onChange={(e) => {
-            setStoreName(
-              e.target.value.replace(/[^a-zA-Z0-9-]/, "").toLowerCase()
-            );
-          }}
-          InputProps={{
-            autoFocus: true,
-            endAdornment: (
-              <InputAdornment position="end">.example.com</InputAdornment>
-            ),
-            startAdornment: (
-              <InputAdornment position="start">
-                <PermIdentityOutlined />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </div>
-
-      <div className="form-group mb-5">
-        Click the <strong>Continue</strong> button below to get started
-        collaborating with your new team.
-      </div>
-
-      <div>
-        <Button
-          disabled={!ok}
-          size="large"
-          fullWidth
-          variant="contained"
-          color="primary"
-          //   ref={continueBtn}
-          onClick={() => {
-            sendToServer();
-          }}
-        >
-          Continue
-        </Button>
-      </div>
-    </>
+    <>Redirecting ...</>
   ) : error ? (
     <Alert severity="warning">
       <AlertTitle>
